@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件及父子组件通信</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- @send="change"接受来自子组件的通信 -->
+         <comp :mes="title" :user="userinfo" :citys="city" @send="change"></comp>
+         {{mesFromSun}}
+    </div>
+    <script type="text/template" id="comp-name">
+         <div>
+             <h1>小明</h1>
+             <h1>小红</h1>
+             <!-- 父容器传过来的字符串 -->
+             {{mes}}
+             <!-- 父容器传过来的对象 -->
+             <h1>{{user.name}}</h1>
+             <h1>{{user.age}}</h1>
+             <ul>
+                 <!-- 父容器传过来的数组 -->
+                 <li v-for="c in citys">{{c}}</li>
+             </ul>
+             <hr>
+             <button @click="del">-</button>
+             <h1>{{count}}</h1>
+             <button @click="add">+</button>
+         </div>
+    </script>
+    <script>
+        //全局组建的定义方式
+        Vue.component("comp",{
+            template:"#comp-name",
+            props:["mes","user","citys"],
+            data(){
+                 return {
+                     count:0
+                 }
+            },
+            methods:{
+                del(){
+                    this.count--;
+                    //子组件向父容器传值
+                    this.$emit("send",this.count)
+                },
+                add(){
+                    this.count++;
+                    this.$emit("send",this.count)
+                }
+            }
+        })
+        //vue根实例
+        var vm=new Vue({
+            el:"#app",
+            data:{
+                 title:"hello world",
+                 userinfo:{
+                     name:"小红",
+                     age:18
+                 },
+                 city:["北京","上海","天津"],
+                 mesFromSun:0
+            },
+            methods:{
+                change(val){
+                   this.mesFromSun=val
+                }
+            }
+        })
+    </script>
+    
+</body>
+</html>

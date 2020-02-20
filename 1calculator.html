@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <button @click="del($event)">-</button>
+        <h1>{{count}}</h1>
+        <button @click="add">+</button>
+    </div>
+    <script>
+        var vm=new Vue({
+            el:"#app",
+            data:{
+               count:0
+            },
+            methods:{
+                del(evt){
+                    console.log(evt.target)
+                    this.count--         
+                },
+                add(){
+                    this.count++
+                }
+            },
+            //可以拿到dom节点，拿不到data中的数据
+            beforeCreate(){
+                console.log(document.querySelector('#app'))
+                console.log(this.count)
+            },
+            //可以拿到dom节点，可以拿到data中的数据，但是模版中未挂载数据
+            created(){
+                console.log(document.querySelector('#app'))
+                console.log(this.count)
+            },
+            //可以拿到dom节点，可以拿到data中的数据，但是模版中未挂载数据
+            beforeMount(){
+                console.log(document.querySelector('#app'))
+            },
+            //可以拿到dom节点，可以拿到data中的数据，模版中数据也挂载上了
+            mounted(){
+                console.log(document.querySelector('#app'))
+            }
+
+        })
+    </script>
+</body>
+</html>

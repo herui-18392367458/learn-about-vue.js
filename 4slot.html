@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>插槽</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+         <comp>hello world</comp>
+    </div>
+    <script type="text/template" id="comp-name">
+          <div>
+              <slot></slot>
+          </div>  
+    </script>
+    <script>
+        Vue.component("comp",{
+            template:"#comp-name"
+        })
+        var vm=new Vue({
+            el:"#app",
+            data:{
+
+            }
+        })
+    </script>
+    
+</body>
+</html>

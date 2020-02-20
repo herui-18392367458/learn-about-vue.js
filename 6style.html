@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>class/style的书写以及组件的class和样式</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- 动态的布尔值控制class名 可加多个 -->
+         <div :class="{box1:isbox,box2:isboxy}">hello world</div>
+        <!-- 用数组的形式加  数组中是key，映射出value -->
+         <div :class="[active1,active2]">hello world</div>
+         <!-- 通过key value的形式映射样式 -->
+         <div :style="{color:color,fontSize:fontsize}">hello world</div>
+         <!-- 以对象的形式加样式 -->
+         <div :style="fontstyle">hello world</div>
+         <!-- 组件外边定义class会和组件内的class合并 外部定义style会覆盖内部的style -->
+         <comp class="box1" style="color: blue;"></comp>
+    </div>
+    <script>
+        Vue.component('comp',{
+            template:"<div class='box2' style='color:red'>hello world</div>"
+        })
+        var vm=new Vue({
+            el:"#app",
+            data:{
+               isbox:true,
+               isboxy:false,
+               active1:"box3",
+               active2:"box4",
+               color:'red',
+               fontsize:'30px',
+               fontstyle:{
+                   'font-size':"30px",
+                   color:'red'
+               }
+            }
+        })
+    </script>
+    
+</body>
+</html>

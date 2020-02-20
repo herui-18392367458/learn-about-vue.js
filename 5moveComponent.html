@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动态组件</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- 通过点击事件来传递一个循环中得到的变量 -->
+       <button v-for="c in tab" @click="change(c)">{{c}}</button>
+       <!-- 动态组件 典型的tab切换例子 -->
+       <component :is="currentComp"></component>
+    </div>
+    <script>
+        Vue.component("tab-home",{
+            template:"<div>home</div>"
+        })
+        Vue.component("tab-classify",{
+            template:"<div>classify</div>"
+        })
+        Vue.component("tab-my",{
+            template:"<div>my</div>"
+        })
+        var vm=new Vue({
+            el:"#app",
+            data:{
+                tab:["home","classify","my"],
+                //临时加一个变量用来存我需要的动态组件名字的一部分
+                current:"home"
+            },
+            //通过计算属性来得到我需要的动态组件名字
+            computed:{
+                currentComp(){
+                    return "tab-"+this.current
+                }
+            },
+            methods:{
+                change(val){
+                    this.current=val
+                }
+            }
+
+        })
+    </script>
+    
+</body>
+</html>
