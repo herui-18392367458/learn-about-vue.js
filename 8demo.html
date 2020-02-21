@@ -100,7 +100,7 @@
                 changeShow(item){
                     this.isshow=true;
                     console.log(item)
-                    //将拿到的item对象，做深复制，打断与原来的练习，这样前边输后边就立马变，体验不好
+                    //将拿到的item对象，做深复制，打断与原来的练习，避免前边输后边就立马变，体验不好
                     this.userMessage=Object.assign({},item)
                 },
                 closeHandler(){
