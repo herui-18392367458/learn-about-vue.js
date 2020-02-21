@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>局部组件的定义和传值以及生命周期函数执行顺序</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- 子组件a通过属性传递 -->
+         <compa :usermessage="userinfo"></compa>
+    </div>
+    <script>
+        var compb={
+            // b组件内容接收
+            props:['user'],
+            // 在模版里展示
+            template:"<div>hi jack-{{user}}</div>",
+            beforeCreate(){
+                console.log('from compb beforeCreate')
+            },
+            created(){
+                console.log('from compb Created')
+            },
+            beforeMount(){
+                console.log('from compb beforeMount')
+            },
+            mounted(){
+                console.log('from compb mounted')
+            },
+            beforeUpdate(){
+                console.log('from compb beforeUpdate')
+            },
+            updated(){
+                console.log('from compb updated')
+            }
+        }
+        var compa={
+            //子组件a内部先接收
+            props:['usermessage'],
+            // a组件的子组件b通过属性传递
+            template:"<div>hello world <compb :user='usermessage'></compb></div>",
+            components:{
+                compb
+            },
+            beforeCreate(){
+                console.log('from compa beforeCreate')
+            },
+            created(){
+                console.log('from compa Created')
+            },
+            beforeMount(){
+                console.log('from compa beforeMount')
+            },
+            mounted(){
+                console.log('from compa mounted')
+            },
+            beforeUpdate(){
+                console.log('from compa beforeUpdate')
+            },
+            updated(){
+                console.log('from compa updated')
+            }
+        }
+        var vm=new Vue({
+            el:"#app",
+            components:{
+               compa
+            },
+            data:{
+                //父容器中这条数据一直传到孙组件b中显示
+               userinfo:"xiaohong"
+            },
+            beforeCreate(){
+                console.log('from root beforeCreate')
+            },
+            created(){
+                console.log('from root Created')
+            },
+            beforeMount(){
+                console.log('from root beforeMount')
+            },
+            mounted(){
+                console.log('from root mounted')
+            },
+            beforeUpdate(){
+                console.log('from root beforeUpdate')
+            },
+            updated(){
+                console.log('from root updated')
+            }
+        })
+        /*
+        执行顺序
+            from root beforeCreate
+            from root Created
+            from root beforeMount
+            from compa beforeCreate
+            from compa Created
+            from compa beforeMount
+            from compb beforeCreate
+            from compb Created
+            from compb beforeMount
+            from compb mounted
+            from compa mounted
+            from root mounted
+        vm.userinfo="xiaoming"
+            from root beforeUpdate
+            from compa beforeUpdate
+            from compb beforeUpdate
+            from compb updated
+            from compa updated
+            from root updated
+        */
+    </script>
+    
+    
+</body>
+</html>

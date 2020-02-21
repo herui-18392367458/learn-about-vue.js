@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>案例</title>
+    <script src="./vue.js"></script>
+    <style>
+        table{
+            width: 600px;
+            height: 400px;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        tr,td{
+            border:1px solid red;  
+        }
+        .mask{
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            background:rgba(87, 79, 79,.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .main{
+            width:200px;
+            height:120px;
+            background: #fff;
+            padding: 10px;
+        }
+        .main header{
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+         <table>
+             <thead>
+                 <td>姓名</td>
+                 <td>年龄</td>
+                 <td>性别</td>
+                 <td>操作</td>
+             </thead>
+             <tbody>
+                 <tr v-for="c in userinfo">
+                     <td>{{c.name}}</td>
+                     <td>{{c.age}}</td>
+                     <td>{{c.sex}}</td>
+                     <td>
+                         <button @click="changeShow(c)">编辑</button>
+                         <button @click="del(c.id)">删除</button>
+                     </td>
+                 </tr>
+             </tbody>
+         </table>
+         <comp v-if="isshow" @send-close="closeHandler">
+             姓名：<input type="text" v-model="userMessage.name"><br>
+             年龄：<input type="text" v-model="userMessage.age"><br>
+             性别：<input type="text" v-model="userMessage.sex">
+             <button @click="sub">提交</button>
+         </comp>
+    </div>
+    <script type="text/template" id="comp-name">
+        <div class="mask">
+            <div class="main">
+                <header>
+                    <span>编辑</span>
+                    <span @click="close">关闭</span>
+                </header>
+                <slot></slot>
+            </div>
+        </div>
+          
+    </script>
+    <script>
+        Vue.component('comp',{
+            template:"#comp-name",
+            methods:{
+                close(){
+                    this.$emit('send-close')
+                }
+            }
+        })
+        var vm=new Vue({
+            el:"#app",
+            data:{
+                userinfo:[],
+                isshow:false,
+                userMessage:{}
+            },
+            methods:{
+                //编辑
+                changeShow(item){
+                    this.isshow=true;
+                    console.log(item)
+                    //将拿到的item对象，做深复制，打断与原来的练习，这样前边输后边就立马变，体验不好
+                    this.userMessage=Object.assign({},item)
+                },
+                closeHandler(){
+                    this.isshow=false
+                },
+                //删除
+                del(id){
+                   this.userinfo.forEach((item,index) => {
+                       if(item.id===id){
+                           this.userinfo.splice(index,1)
+                       }
+                   });
+                },
+                //提交
+                sub(){
+                    this.userinfo.forEach((item,index)=>{
+                        if(item.id===this.userMessage.id){
+                            item.name=this.userMessage.name;
+                            item.age=this.userMessage.age;
+                            item.sex=this.userMessage.sex
+                        }
+                    })
+                    this.isshow=false
+                }
+
+            },
+            //请求数据渲染表格
+            created(){
+                fetch('./userinfo.json').then(res=>res.json()).then(result=>{
+                    this.userinfo=result.user
+                })
+            }
+        })
+    </script>
+    
+</body>
+</html>
