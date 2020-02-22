@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>边界值/通过$..拿父子中节点的数据和方法</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="text" ref="input">
+         <comp-a></comp-a>
+    </div>
+    <script>
+         Vue.component('comp-b',{
+            template:"<div>comp-b</div>",
+            data(){
+                return {
+                    users:"xiaowang"
+                }
+            }
+            ,
+            mounted(){
+                //取根节点中的数据
+                console.log(this.$root.user)
+                //取根节点中的方法
+                console.log(this.$root.getUserName())
+                //取父节点中的数据
+                console.log(this.$parent.user)
+            }
+        })
+        Vue.component('comp-a',{
+            //ref给子节点设置属性
+            template:"<div>comp-a <comp-b ref='compb'>comp-b</comp-b></div>",
+            data(){
+                return {
+                    user:"xiaohong"
+                }
+            },
+            mounted(){
+                //通过this.$refs['子节点属性']取子节点中的数据
+                console.log(this.$refs['compb'].users)
+            }
+        })
+        var vm=new Vue({
+            el:"#app",
+            data:{
+              user:"xiaoming"
+            },
+            methods:{
+                getUserName(){
+                     return "getUserName from root"
+                }
+            },
+            mounted(){
+                this.$refs['input'].focus()
+            }
+        })
+    </script>
+</body>
+</html>

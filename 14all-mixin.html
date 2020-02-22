@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全局混入</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+
+    </div>
+    <script>
+        //全局混入 慎用，会影响实例的数据
+        Vue.mixin({
+            data(){
+                return {
+                    user:"from mixin user",
+                    age:"from mixin age"
+                }
+            },
+            methods:{
+                getUser(){
+                    console.log('from mixin getUser')
+                }
+            },
+            mounted(){
+                console.log("from mixin mounted")
+            }
+        })
+        var vm=new Vue({
+            data:{
+               user:"from root user"
+            },
+            methods:{
+               getUser(){
+                   console.log("from root getUser")
+               }
+            },
+            mounted(){
+                this.getUser()
+                console.log("from root mounted")
+                console.log(this.user)
+                console.log(this.age)
+            }
+        })
+        vm.$mount("#app")
+        /*
+           全局混入和实例的钩子函数都会执行，
+           实例的data数据覆盖全局混入的data数据，
+           实例的方法会覆盖全局混入的方法
+        */
+    </script>
+    
+</body>
+</html>

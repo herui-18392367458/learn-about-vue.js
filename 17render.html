@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自定义渲染函数</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+
+    </div>
+    <script>
+        var vm=new Vue({
+            el:"#app",
+            //自定义渲染函数
+            render(createElement){
+                return createElement('div',{
+                    //属性
+                    class:"box1",
+                    attrs:{
+                        id:"contain1"
+                    },
+                    //事件
+                    on:{
+                        click(){
+                            console.log('hello world')
+                        }
+                    }
+                },['hello world',
+                createElement('div',{
+                    class:"box2",
+                    attrs:{
+                        id:"contain2"
+                    },
+                    on:{
+                        click(e){
+                            //加一个阻止事件冒泡
+                            e.stopPropagation()
+                            console.log('hello xiaohong')
+                        }
+                    }
+                },['hello xiaohong'])
+                ])
+            }
+        })
+    </script>
+    
+</body>
+</html>

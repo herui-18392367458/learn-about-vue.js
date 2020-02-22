@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>依赖注入</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+       <compa></compa>
+    </div>
+    <script>
+        var compb={
+            template:"<div>compb</div>",
+            //inject接收
+            inject:["userinfo","methodss"],
+            mounted(){
+                console.log(this.userinfo)
+                console.log(this.methodss)
+            }
+        }
+        var compa={
+            template:"<div>compa<compb></compb></div>",
+            components:{
+                compb
+            }
+        }
+        var vm=new Vue({
+            el:"#app",
+            data:{
+                user:"xiaohong"
+            },
+            components:{
+                compa
+            },
+            methods:{
+               message(){
+                   return "hello world"
+               }
+            },
+            //依赖注入，可传字符串，可传方法
+            provide:function(){
+                return{
+                    userinfo:this.user,
+                    methodss:this.message()
+                }
+            }
+        })
+    </script>
+    
+</body>
+</html>

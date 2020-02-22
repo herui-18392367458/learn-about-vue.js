@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自定义指令</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-focus>
+        <h1 v-style:font-size.50px.red>hello world</h1>
+        <h1 v-demo="{user:'xiaohong',age:'18'}">xiaohong</h1>
+    </div>
+    <script>
+        Vue.directive('focus',{
+            inserted(el){
+                el.focus()
+            } 
+        })
+        Vue.directive('style',{
+            bind(el,options){
+            console.log(arguments)
+            //用解构的方式把对象的key解构出来
+            let [fontSize,color]=Object.keys(options.modifiers)
+            el.style[options.arg]=fontSize
+            el.style.color=color
+            }
+        })
+        Vue.directive('demo',function(el,binding){
+            console.log(binding)
+            console.log(binding.value.user)
+            console.log(binding.value.age)
+        })
+        var vm=new Vue({
+            el:"#app",
+        })
+    </script>
+</body>
+</html>

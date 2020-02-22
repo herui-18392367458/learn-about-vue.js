@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件上的数据双向绑定</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        {{mail}}
+       <comp v-model="mail"></comp>
+    </div>
+    <script type="text/template" id="comp-name">
+         <div>
+             <input type="text" @input="handler($event)">
+         </div>
+    </script>
+    <script>
+        Vue.component('comp',{
+            template:"#comp-name",
+            methods:{
+                valiteMail(val){
+                   return /^\w{3,15}\@\w+\.[a-z]{2,3}$/.test(val)
+                },
+                handler(event){
+                   let mail=event.target.value;
+                   if(this.valiteMail(mail)){
+                       this.$emit('input',mail)
+                   }else{
+                       this.$emit('input','')
+                   }
+                }
+            }
+        })
+        var vm=new Vue({
+            el:"#app",
+            data:{
+                mail:""
+            }
+        })
+    </script>
+</body>
+</html>

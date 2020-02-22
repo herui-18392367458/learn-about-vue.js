@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件总线实现传值</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+          <compa></compa>
+          <button @click="handlerClick">send</button>
+    </div>
+    <script>
+        //全局定义事件总线
+        var eventbus=new Vue()
+        var compb={
+            template:"<div>compb</div>",
+            mounted(){
+                //接收数据
+                eventbus.$on('sendMessage',function(msg){
+                    console.log(msg)
+                })
+            }
+        }
+        var compa={
+            template:"<div>compa<compb></compb></div>",
+            components:{
+                compb
+            }
+        }
+        var vm=new Vue({
+            el:"#app",
+            data:{
+                user:"xiaoming"
+            },
+            methods:{
+                handlerClick(){
+                    //发送数据
+                    eventbus.$emit('sendMessage',"hello world")
+                }
+            },
+            components:{
+                compa
+            }
+        })
+    </script>
+    
+</body>
+</html>
