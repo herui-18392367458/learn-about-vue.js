@@ -119,17 +119,21 @@
                 searchTxt:"",
                 isasc:true,
                 isdesc:false,
+                //是否启动排序
                 isSort:false
             },
             computed:{
               getList(){
                   let result=this.userinfo.filter((item)=>{
+                      //根据存起来的值正则筛选
                       let reg=RegExp(this.keyWord,'i')
                       return reg.test(item.name)
                   })
+                //启动排序的时候执行 isShort为true
                 if(this.isSort){
                     if(this.isasc){
                       result=result.sort((a,b)=>{
+                          //a和b相当于数组的item
                           return a["salary"]-b['salary']
                       })
                   }else{
@@ -144,11 +148,14 @@
             methods:{
                 //搜索
                 search(){
+                    //先把搜索输入的值存起来
                     this.keyWord=this.searchTxt
                 },
+                //点击排序按钮时切换升序或者降序的图标
                 sortSalary(){
                    this.isasc=!this.isasc;
                    this.isdesc=!this.isdesc;
+                   //启动排序 存起来用于后续的使用
                    this.isSort=true
 
                 },
