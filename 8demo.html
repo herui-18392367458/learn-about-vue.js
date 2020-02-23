@@ -12,6 +12,20 @@
             border-collapse: collapse;
             text-align: center;
         }
+        .asc{
+            display: inline-block;
+            width: 20px;
+            height: 100%;
+            font-size: 20px;
+            transform: rotate(90deg);
+        }
+        .desc{
+            display: inline-block;
+            width: 20px;
+            height: 100%;
+            font-size: 20px;
+            transform: rotate(270deg);
+        }
         tr,td{
             border:1px solid red;  
         }
@@ -41,18 +55,24 @@
 </head>
 <body>
     <div id="app">
+        <input type="text" v-model="searchTxt"> <button @click="search">搜索</button>
          <table>
              <thead>
                  <td>姓名</td>
                  <td>年龄</td>
                  <td>性别</td>
+                 <td>
+                     <span>薪水</span>
+                     <span :class="{asc:isasc,desc:isdesc}" @click="sortSalary">&lt;</span>
+                </td>
                  <td>操作</td>
              </thead>
              <tbody>
-                 <tr v-for="c in userinfo">
+                 <tr v-for="c in getList">
                      <td>{{c.name}}</td>
                      <td>{{c.age}}</td>
                      <td>{{c.sex}}</td>
+                     <td>{{c.salary}}</td>
                      <td>
                          <button @click="changeShow(c)">编辑</button>
                          <button @click="del(c.id)">删除</button>
@@ -92,15 +112,51 @@
             el:"#app",
             data:{
                 userinfo:[],
+                list:[],
                 isshow:false,
-                userMessage:{}
+                userMessage:{},
+                keyWord:"",
+                searchTxt:"",
+                isasc:true,
+                isdesc:false,
+                isSort:false
+            },
+            computed:{
+              getList(){
+                  let result=this.userinfo.filter((item)=>{
+                      let reg=RegExp(this.keyWord,'i')
+                      return reg.test(item.name)
+                  })
+                if(this.isSort){
+                    if(this.isasc){
+                      result=result.sort((a,b)=>{
+                          return a["salary"]-b['salary']
+                      })
+                  }else{
+                    result=result.sort((a,b)=>{
+                          return b["salary"]-a['salary']
+                      })
+                }
+              }
+              return result
+            }
             },
             methods:{
+                //搜索
+                search(){
+                    this.keyWord=this.searchTxt
+                },
+                sortSalary(){
+                   this.isasc=!this.isasc;
+                   this.isdesc=!this.isdesc;
+                   this.isSort=true
+
+                },
                 //编辑
                 changeShow(item){
                     this.isshow=true;
                     console.log(item)
-                    //将拿到的item对象，做深复制，打断与原来的练习，避免前边输后边就立马变，体验不好
+                    //将拿到的item对象，做深复制，打断与原来的练习，这样前边输后边就立马变，体验不好
                     this.userMessage=Object.assign({},item)
                 },
                 closeHandler(){
