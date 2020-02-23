@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>过滤器</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>{{date | formateDate('yyyy') | add }}</h1>
+    </div>
+    <script>
+        //定义全局的过滤器
+        Vue.filter('formateDate',function(value,type){
+            if(type==="yyyy"){
+                return value.split('-')[0]
+            }else{
+                return value
+            }
+        })
+        //过滤器还可以跟过滤器
+        Vue.filter('add',function(value,type){
+            return '今年是'+value
+        })
+        var vm=new Vue({
+            el:"#app",
+            data:{
+                date:"2020-2-23"
+            }
+        })
+    </script>
+</body>
+</html>

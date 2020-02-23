@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>插件的定义与使用</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+        //定义的插件  给本地存数据
+        var cache={
+            add:function(key,value){
+                if(localStorage){
+                    localStorage.setItem(key,value)
+                }else{
+                }
+            }
+        }
+        //在vue中挂载插件
+        var myPlugin={
+            install(vue){
+               vue.prototype.$cache=cache
+            }
+        }
+        //注册
+        Vue.use(myPlugin)
+        var vm=new Vue({
+            el:"#app",
+            mounted(){
+              this.$cache.add("username","xiaohong")
+            }
+        })
+    </script>
+</body>
+</html>
