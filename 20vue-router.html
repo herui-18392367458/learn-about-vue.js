@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>路由</title>
+    <script src="./vue.js"></script>
+    <script src="./vue-router.js"></script>
+</head>
+<body>
+    <div id="app">
+        <router-link to="/position/123/user/456">职位1</router-link>
+        <router-link to="/position/abc/user/def">职位2</router-link>
+        <router-link to="/search">搜索</router-link>
+        <router-view></router-view>
+    </div>
+    <script>
+        var position={
+            // template:"<div>position-{{$route.params.id}}</div>",
+            props:["id","userid"],
+            template:"<div>position-{{id}}</div>",
+            //**组件在复用的情况下**，当路由发生变化时触发
+            // watch:{
+            //     "$route":(to,from)=>{
+            //         console.log(to,from)
+            //     }
+            // },
+            //**也是在组件复用的时候使用**，当路由发生改变时触发
+            beforeRouteUpdate(to,from,next){
+                next()//是否往下执行，用next()实现
+            },
+            mounted(){
+                console.log(this.$route.params.id)
+                console.log(this.$route.params.userid)
+            }
+            }
+        var search={
+            props:["username","age"],
+            template:"<div>search-{{username}}-{{age}}</div>"
+        }
+        var notFound={
+            template:"<h1>404</h1>"
+        }
+        var routes=[{
+            path:"/position/:id/user/:userid",
+            //路由传参，传字符串
+            props:true,
+            component:position
+        },{
+            //-*表示以search-开头的，后边任意路径都匹配到search这个组件页面
+            path:"/search",
+            //路由传参，传对象
+            // props:{
+            //     username:"xiaohong",
+            //     age:"18"
+            // },
+            //路由传参，传方法
+            props:(routes)=>({username:"xiaoming",age:"18"})
+            ,
+            component:search
+        },{
+            //当以上页面都无法匹配到时，会匹配到404页面 要放在所有路由的最后
+            path:"*",
+            component:notFound
+        }]
+        var router=new VueRouter({
+            // mode:"history",将路由模式改为history
+            routes
+        })
+        var vm=new Vue({
+            router,
+            el:"#app",
+
+        })
+    </script>
+    
+</body>
+</html>

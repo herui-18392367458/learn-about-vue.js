@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>嵌套路由</title>
+    <script src="./vue.js"></script>
+    <script src="./vue-router.js"></script>
+    <style>
+        .container{
+            display: flex;
+            background: #ccc;
+        }
+        ul{
+           margin:0;
+           padding:0;
+           height: 100%;
+           flex-basis: 100px;
+           background: #ccc;
+        }
+        .container-box{
+            flex:1;
+            background: #fff;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="app">
+        <router-link to="/guide">指南</router-link>
+        <router-link to="/api">api</router-link>
+        <router-link to="/updateList">更新记录</router-link>
+        <router-view name="main" class="container"></router-view>
+        <hr>
+        <router-view name="foot"></router-view>
+        <button @click="handler">编程式导航</button>
+    </div>
+    <script>
+        var footer={
+            template:"<div>footer</div>"
+        }
+        var guide={
+            template:`
+                <div>
+                   <ul>
+                    <router-link tag="li" to="/guide/install">安装</router-link>
+                    <router-link tag="li" to="/guide/introduce">介绍</router-link>
+                    <router-link tag="li" to="/guide/detail">详细</router-link>
+                   </ul>
+                   <router-view class="container-box"></router-view>
+                </div>`
+        }
+        var api={
+            template:"<div>api</div>"
+        }
+        var updateList={
+            template:"<div>更新记录</div>"
+        }
+        var install={
+            template:"<div>安装</div>"
+        }
+        var introduce={
+            template:"<div>介绍</div>"
+        }
+        var detail={
+            template:"<div>详细</div>"
+        }
+        var routes=[{
+            path:"",
+            redirect:"/guide"
+        },{
+            path:"/guide",
+            components:{
+                main:guide,
+                foot:footer
+            },
+            redirect:"/guide/install",
+            children:[
+                {
+                    path:"install",
+                    component:install
+                },{
+                    path:"introduce",
+                    component:introduce
+                },{
+                    path:"detail",
+                    component:detail
+                }
+            ]
+        },{
+            name:"api",
+            path:"/api/:id",
+            components:{
+                main:api
+            },
+        },{
+            path:"/updateList",
+            components:{
+                main:updateList
+            },
+        }]
+        var router=new VueRouter({
+            routes
+        })
+        var vm=new Vue({
+            router,
+            el:"#app",
+            methods:{
+                handler(){
+    //编程式导航
+    //*****用query传参的话是不需要/:id的，用params或者字符串模版式需要/:id
+            // this.$router.push('/api')
+            // router.push('/api')
+
+
+            router.push({path:"/api",query:{id:123}}) //*
+            console.log(this.$route.query.id)
+            //  router.push({name:"api",params:{id:123}})**
+            //  console.log(this.$route.params.id)
+
+
+                    // router.push({path:`/api/${333}`})
+                    // console.log(this.$route.params.id)
+
+                }
+            }
+        })
+    </script>
+</body>
+</html>
