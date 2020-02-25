@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>路由守卫</title>
+    <script src="./vue.js"></script>
+    <script src="./vue-router.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <router-link to="/position/1">职位1</router-link>
+        <router-link to="/position/2">职位2</router-link>
+        <router-link to="/search">搜索</router-link>
+        <router-view></router-view>
+    </div>
+    <script>
+        var position = {
+            template: "<div>position</div>"
+            //组件内的守卫，当组件被复用时，路由信息发生改变时调用
+            // beforeRouteUpdate(to,from,next){
+            //     console.log(to,from)
+            //     next()
+            // }
+            //离开组件时调用，例如是否确认离开
+            // beforeRouteLeave(to, from, next) {
+            //     const answer = window.confirm('do you confirm to next?')
+            //     if (answer) {
+            //         next()
+            //     } else {
+            //         next(false)
+            //     }
+            // }
+        }
+        var search = {
+            template: "<div>search</div>"
+        }
+        var routes = [{
+            path: "/position/:id",
+            component: position,
+            meta:{
+                requireAuth:true
+            },
+            // 路由独享守卫 在进入这个路由前做一些事情
+            beforeEnter:(to,from,next)=>{
+                console.log(to,from)
+                next()
+             
+            }
+        }, {
+            path: "/search",
+            component: search,
+            meta:{
+                requireAuth:false
+            }
+        }]
+        var router = new VueRouter({
+            routes
+        })
+        //全局前置守卫，可以做判断是否登陆
+        // router.beforeEach((to,from,next)=>{
+        //     console.log(to,from)
+        //     next()
+        // })
+        var vm = new Vue({
+            el: "#app",
+            router
+        })
+    </script>
+
+</body>
+
+</html>

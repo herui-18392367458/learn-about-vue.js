@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用vuex实现计数器</title>
+    <script src="./vue.js"></script>
+    <script src="./vuex.js"></script>
+</head>
+<body>
+    <div id="app">
+       <comp type="del"></comp>
+       <comp-num></comp-num>
+       <comp type="add"></comp>
+       <button @click="actionHandler">action</button>
+    </div>
+    <script>
+        var store=new Vuex.Store({
+            state:{
+                count:0
+            },
+            //用于修改state中数据的
+            mutations:{
+                increamece(state,obj){
+                    state.count+=obj.num
+                },
+                decreamece(state,obj){
+                    state.count-=obj.num
+                }
+            },
+            //处理异步方法的  可用于发送ajax请求
+            actions:{      
+                addHandler({commit},obj){
+                    setTimeout(()=>{
+                       commit('increamece',obj)
+                    },2000)
+                }
+            }
+        })
+        Vue.component("comp",{
+            props:["type"],
+            template:"<button @click='handler'>{{buttonText}}</button>",
+            computed:{
+                buttonText(){
+                    return this.type==="add" ? "+" :"-"
+                }
+            },
+            methods:{
+                handler(){
+                    if(this.type==="add"){
+                        //commit =》mutations中的方法去修改state中的数据
+                        store.commit('increamece',{num:5})
+                    }else{
+                        store.commit('decreamece',{num:2})
+                    }
+                }
+            }
+        })
+        Vue.component("comp-num",{
+            //在页面中用$store.state.count获取state中的数据
+            template:"<h1>{{$store.state.count}}</h1>"
+        })
+        var vm=new Vue({
+            el:"#app",
+            store,
+            methods:{
+                //根实例下派发一个方法，这个方法执行异步事件
+                actionHandler(){
+                    store.dispatch("addHandler",{num:10})
+                }
+            }
+        })
+    </script>
+    
+</body>
+</html>
