@@ -9,15 +9,16 @@ import TodoForm from "../components/TodoForm."
 import TodoList from "../components/TodoList"
 import {mapActions} from "vuex"
 export default {
+    created(){
+        // this.getList()
+    },
     components:{
         TodoForm,
         TodoList
     },
-    created(){
-        this.getList()
-    },
     methods:{
         ...mapActions(["getList"])
     }
+       
 }
 </script>
