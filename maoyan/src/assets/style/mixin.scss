@@ -1,0 +1,39 @@
+//混入1px的边框适配写法
+@mixin border-bottom-1px($color){
+    position: relative;
+    &:after{
+        position: absolute;
+        content: ' ';
+        left: 0;
+        bottom: 0;
+        right:0;
+        height:1px;
+        background:$color
+    }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5){
+    .border-bottom-1px{
+         &::after{
+             -webkit-transform: scaleY(0.7);
+             transform: scaleY(0.7);
+         }
+    }
+}
+
+@media (-webkit-min-device-pixel-ratio: 2),(min-device-pixel-ratio: 2){
+    .border-bottom-1px{
+         &::after{
+             -webkit-transform: scaleY(0.5);
+             transform: scaleY(0.5);
+        }
+    }
+}
+
+@media (-webkit-min-device-pixel-ratio: 3),(min-device-pixel-ratio: 3){
+    .border-bottom-1px{
+         &::after{
+             -webkit-transform: scaleY(0.3);
+             transform: scaleY(0.3);
+        }
+    }
+}
