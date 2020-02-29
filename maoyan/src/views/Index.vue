@@ -20,7 +20,7 @@
     </div>
 </template>
 <style lang="scss" scoped>
-@import 'assets/style/mixin.scss';
+@import 'assets/style/mixin2.scss';
 .index-container{
     height: 100%;
     display: flex;
@@ -32,16 +32,17 @@
         text-align: center;
         font-size: 18px;
         font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
-        font-weight: 300
+        font-weight: 300;
     }
     .main{
          flex:1;
-         //使用的时候@include 方法名（参数）
-         @include border-bottom-1px(#d8d8d8)
+         overflow: auto;
     }
     .footer{
        height: 48px;
        display: flex;
+       //使用的时候@include 方法名（参数）
+       @include border-top-1px(#d8d8d8);
        li{
            flex:1;
            font-size: 12px;
