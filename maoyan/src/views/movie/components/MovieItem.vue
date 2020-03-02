@@ -1,22 +1,34 @@
 <template>
     <div class="movie-container">
          <div class="left">
-              <img src="https://p0.meituan.net/128.180/moviemachine/331c70099c5728d53694009426fb84ba165027.jpg">
+             <!-- 使用过滤器，将src地址中的问题字段替换 -->
+              <img :src="item.img | formateImg">
          </div>
          <div class="middle">
-             <h1>通往春天的列车</h1>
+             <h1>{{item.nm}}</h1>
              <p>
-                 <span class="num">6568</span>
+                 <span class="num">{{item.wish}}</span>
                  <span>人想看</span>
              </p>
-             <p>主演: 任素汐,李岷城,陈宇星,任素汐,李岷城,陈宇星,任素汐,李岷城,陈宇星</p>
-             <p>2020-03-20上映</p>
+             <p>主演:{{item.star}}</p>
+             <p>{{item.rt}}上映</p>
          </div>
          <div class="right">
-            <div class="btn">购买</div>
+            <div class="btn" >购买</div>
          </div>
     </div>
 </template>
+<script>
+export default {
+    props:["item"],
+    filters:{
+        formateImg(url){
+            return url.replace(/w.h/,"128.180")
+        }
+    }
+    
+}
+</script>
 <style lang="scss" scoped>
 @import 'assets/style/mixin.scss';
     .movie-container{
@@ -43,7 +55,10 @@
                font-size: 17px;
                color: #333;
                font-weight: 500;
-               line-height: 32px
+               line-height: 32px;
+               white-space: nowrap;
+               overflow: hidden;
+               text-overflow: ellipsis;
             }
             p{
                font-size: 13px;

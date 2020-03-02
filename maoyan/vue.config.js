@@ -1,6 +1,17 @@
 const postcsspxtovw = require('postcss-px-to-viewport');
 const path=require('path')
 module.exports = {
+    devServer:{
+      proxy:{
+          "/api":{
+              target:"http://m.maoyan.com",
+              changeOrigin:true,
+              pathRewrite:{
+                  "^/api":""
+              }
+          }
+      }
+    },
     css: {
         loaderOptions: {
             postcss: {
