@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import 'assets/style/reset.scss'
 import 'assets/style/comm.scss'
+import "@/utils/formatImg"
 Vue.config.productionTip = false
 
 new Vue({

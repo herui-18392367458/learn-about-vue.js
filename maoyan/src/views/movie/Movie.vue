@@ -1,5 +1,6 @@
 <template>
     <div class="movie-container">
+        <Download v-show="$store.state.showDownLoad"></Download>
         <div class="header">
             <router-link 
                tag="div" 
@@ -27,6 +28,14 @@
         <router-view class="main"></router-view>
     </div>
 </template>
+<script>
+import Download from "@/components/Download"
+export default {
+    components:{
+        Download
+    }  
+}
+</script>
 <style lang="scss" scoped>
 @import 'assets/style/mixin.scss';
     .movie-container{

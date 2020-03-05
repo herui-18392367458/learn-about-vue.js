@@ -5,8 +5,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    showDownLoad:true
   },
   mutations: {
+    UPDATE_DOWN_LOAD(state,opation){
+       state.showDownLoad=opation
+    }
   },
   actions: {
   },
