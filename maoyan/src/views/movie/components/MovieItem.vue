@@ -1,5 +1,5 @@
 <template>
-    <div class="movie-container">
+    <div class="movie-container" @click="handlerClick">
          <div class="left">
              <!-- 使用过滤器，将src地址中的问题字段替换 -->
               <img :src="item.img | formateImg">
@@ -24,6 +24,11 @@ export default {
     filters:{
         formateImg(url){
             return url.replace(/w.h/,"128.180")
+        }
+    },
+    methods:{
+        handlerClick(){
+            this.$router.push({name:"detail",params:this.item})
         }
     }
     

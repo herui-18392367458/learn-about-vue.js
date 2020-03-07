@@ -9,6 +9,6 @@ export const moreList=(params)=>{
     return get(url,params)
 }
 export const mostExpact=(params)=>{
-    let url="/api/ajax/mostExpected";
+    let url="/mock/mostExpact.json";
     return get(url,params)
 }

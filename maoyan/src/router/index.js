@@ -8,6 +8,7 @@ import Theator from '../views/theator/Theator'
 import Profile from '../views/profile/Profile'
 import City from '../components/City'
 import Search from '../components/Search'
+import Detail from '../views/detail/Detail'
 Vue.use(VueRouter)
 const routes = [
   {
@@ -33,7 +34,13 @@ const routes = [
   },{
     path:"/city",component:City
   },{
-    path:"/search",component:Search
+    path:"/search",
+    component:Search
+  },
+  {
+    path:"/detail",
+    name:"detail",
+    component:Detail
   }
 ]
 
