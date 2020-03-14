@@ -5,6 +5,7 @@ import store from './store'
 import 'assets/style/reset.scss'
 import 'assets/style/comm.scss'
 import "@/utils/formatImg"
+import "@/utils/cache"
 Vue.config.productionTip = false
 
 new Vue({

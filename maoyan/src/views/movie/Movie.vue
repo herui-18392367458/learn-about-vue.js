@@ -1,12 +1,18 @@
 <template>
     <div class="movie-container">
+         <Header>
+             <template #back>
+              <!-- <i class="icon-back" @click="back"></i> -->
+              <span class="title">猫眼电影</span>
+           </template>
+         </Header>
         <Download v-show="$store.state.showDownLoad"></Download>
         <div class="header">
             <router-link 
                tag="div" 
                class="city"  
                to="/city">
-               <span>城市</span>
+               <span>{{getCities}}</span>
                <i></i>
                </router-link>
             <router-link 
@@ -29,11 +35,17 @@
     </div>
 </template>
 <script>
+import Header from '../../components/Header'
 import Download from "@/components/Download"
+import {mapGetters} from 'vuex'
 export default {
     components:{
-        Download
-    }  
+        Download,
+        Header
+    },
+    computed:{
+        ...mapGetters(['getCities'])
+    } 
 }
 </script>
 <style lang="scss" scoped>
@@ -55,7 +67,11 @@ export default {
                 display: flex;
                 align-items: center;
                 span{
+                    width: 50px;
                     margin-left: 15px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
                 }
                 i{
                     margin:5px 0px 0px 5px;

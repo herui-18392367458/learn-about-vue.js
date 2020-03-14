@@ -1,14 +1,10 @@
 <template>
-    <div>
-        <div class="header">
-            <slot name="back">
-            </slot>
-            <span>猫眼电影</span>
+        <div class="title">
+            <slot name="back"></slot>
         </div>
-    </div>
 </template>
 <style lang="scss" scoped>
- .header{
+ .title{
         line-height: 50.5px;
         background:#e54847;
         color:#fff;

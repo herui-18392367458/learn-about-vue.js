@@ -1,6 +1,6 @@
 <template>
     <div class="index-container">
-         <div class="header">猫眼电影</div>
+         <!-- <div class="header">猫眼电影</div> 这里不能加标题，所有子路由都会引用 --> 
          <router-view class="main"></router-view>
          <ul class="footer">
              <router-link tag="li" activeClass="active" to="/index/movie/hotshow">

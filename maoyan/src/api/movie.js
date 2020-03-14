@@ -12,3 +12,8 @@ export const mostExpact=(params)=>{
     let url="/mock/mostExpact.json";
     return get(url,params)
 }
+//rap2中不用做前端跨域
+export const cityList=(params)=>{
+    let url="http://rap2.taobao.org:38080/app/mock/238565/maoyan/city";
+    return get(url,params)
+}
