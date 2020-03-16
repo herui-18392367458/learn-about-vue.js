@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>路由切换加动画</title>
+    <script src="./vue.js"></script>
+    <script src="./vue-router.js"></script>
+    <style>
+      #app{
+          position: relative;
+      }
+      .box{
+          width: 200px;
+          height: 500px;
+          position: absolute;
+      }
+      .movie{
+          background: green;
+      }
+      .theater{
+          background: red;
+      }
+      .profile{
+          background: blue;
+      }
+      .slide-left-enter,.slide-right-enter-to{
+          opacity: 0;
+          transform: translateX(-100%);
+      }
+      .slide-left-enter-active,.slide-left-leave-active,.slide-right-enter-active,.slide-right-leave-active{
+          transition:all .3s
+      }
+      /* .slide-left-enter-to,.slide-left-leave{
+          transform: translateX(0);
+      } */
+      .slide-left-leave-to,.slide-right-enter{
+          transform: translateX(100%);
+          opacity: 1;
+      }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <router-link to="/movie">电影</router-link>
+        <router-link to="/theater">影院</router-link>
+        <router-link to="/profile">我的</router-link>
+        <!-- 这里要一个动态切换的名字 -->
+        <transition :name="transitionname">
+            <router-view></router-view>
+        </transition>
+    </div>
+    <script>
+        var movie={
+           template:"<div class='box movie'>movie</div>" 
+        }
+        var theater={
+           template:"<div class='box theater'>theater</div>" 
+        }
+        var profile={
+           template:"<div class='box profile'>profile</div>" 
+        }
+        var routes=[{
+            path:"/movie",component:movie,meta:{sort:1}
+        },{
+            path:"/theater",component:theater,meta:{sort:2}
+        },{
+            path:"/profile",component:profile,meta:{sort:3}
+        }]
+        var router=new VueRouter({
+            routes
+        })
+        var vm=new Vue({
+            router,
+            el:"#app",
+            data:{
+                transitionname:"slide-right"
+            },
+            watch:{
+                "$route"(to,from){
+                  if(to.meta.sort>from.meta.sort){
+                     this.transitionname="slide-left"
+                  }else{
+                     this.transitionname="slide-right"
+                  }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

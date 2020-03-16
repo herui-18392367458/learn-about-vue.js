@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>过渡</title>
+    <script src="./vue.js"></script>
+    <style>
+        .box{
+            width: 100px;
+            height: 100px;
+            background: #ff6700;
+        }
+        .fade-enter,.fade-leave-to{
+            opacity: 0;
+        }
+        .fade-enter-active,.fade-leave-active{
+            transition: opacity 3s;
+        }
+        /* 这一步可以省 */
+        /* .fade-enter-to,.fade-leave{
+            opacity: 1;
+        } */
+    </style>
+</head>
+<body>
+    <div id="app">
+        <button @click="move">运动</button>
+        <transition name="fade">
+            <div class="box" v-show="isShow"></div>
+        </transition>
+    </div>
+    <script>
+        var vm=new Vue({
+            el:"#app",
+            data:{
+                isShow:false
+            },
+            methods:{
+                move(){
+                   this.isShow=!this.isShow
+                }
+            }
+        })
+    </script>
+    
+</body>
+</html>
