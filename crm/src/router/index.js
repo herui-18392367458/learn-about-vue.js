@@ -15,17 +15,64 @@ const routes = [
   {
     path: '/home',
     component: Home,
-    children:[
-      {
-        path:"user",
-        component:User
+    redirect:"/home/user",
+    meta:{
+      id:'1',
+      name:"应用管理",
+      iconClass:"el-icon-menu"
+    },
+    children:[{
+        path:'/home/user',
+        component:User,
+        meta:{
+          id:'1-1',
+          name:"用户管理"
+        }
       },
       {
-        path:"roles"
+        path:'/home/roles',
+        // component:Role,
+        meta:{
+          id:'1-2',
+          name:"角色管理"
+        }
       }
     ]
-  },{
-    path:"/login",
+  },
+  {
+    path:'/home',
+    component:Home,
+    meta:{
+      id:'2',
+      name:"日志管理",
+      iconClass:"el-icon-s-custom"
+    },
+    children:[
+      {
+        path:'/home/syslog',
+        meta:{
+          id:'2-1',
+          name:"系统日志"
+        }
+      },
+      {
+        path:'/home/attlog',
+        meta:{
+          id:'2-2',
+          name:"管理员操作日志"
+        }
+      },
+      {
+        path:'/home/userlog',
+        meta:{
+          id:'2-3',
+          name:"用户使用日志"
+        }
+      }
+    ]
+  },
+  {
+    path:'/login',
     component:Login
   }
 ] 
