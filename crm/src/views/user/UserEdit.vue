@@ -1,5 +1,5 @@
 <template>
-  <el-dialog @close="$emit('closeAdd')" class="dialog-wrapper" title="新增" :visible.sync="dialogFormVisible">
+  <el-dialog @close="$emit('closeEdit')" class="dialog-wrapper" title="编辑" :visible.sync="dialogFormVisible">
     <el-form :model="userInfo" :rules="formRules" ref="ruleForm">
       <el-form-item label="姓名" prop="name" :label-width="formLabelWidth">
         <el-input v-model="userInfo.name"></el-input>
@@ -26,6 +26,7 @@
 </template>
 <script>
 export default {
+ props:["item"],
   data() {
     return {
       dialogFormVisible: true,
@@ -50,14 +51,17 @@ export default {
     handleSubmit(){
       this.$refs.ruleForm.validate(async (val)=>{
         if(val){
-          let rs=await this.$http.post('/api/user/add',this.userInfo)
+          let rs=await this.$http.post('/api/user/edit',this.userInfo)
           console.log(rs)
           if(rs.data.code===1){
-            this.$emit('closeAdd','success')
+            this.$emit('closeEdit',"success")
           }
         }
       })
     }
+  },
+  mounted(){
+      this.userInfo=Object.assign({},this.item)
   }
 };
 </script>
