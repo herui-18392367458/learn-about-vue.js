@@ -3,7 +3,7 @@
     <!-- @close接收了子组件关闭的通知，及时更新showadd的属性值 -->
     <UserAdd v-if="showAdd" @closeAdd="handleAddCloser"></UserAdd>
     <UserEdit v-if="showEdit" :item="editMessage" @closeEdit="handleEditCloser"></UserEdit>
-    <el-row>
+    <el-row class="title">
       <el-col class="textIput">
         <el-input v-model="name" placeholder="请输入姓名"></el-input>
       </el-col>
@@ -18,6 +18,7 @@
       :height="getHeight()"
       style="width: 100%"
       :default-sort="{prop: 'date', order: 'descending'}"
+      @selection-change="selectHandle"
     >
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="name" label="姓名" sortable width="180"></el-table-column>
@@ -35,14 +36,21 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination
-      background
-      layout="prev, pager, next"
-      :total="total"
-      :page-size="pageSize"
-      :page-count="pageCount"
-      @current-change="currentChange"
-    ></el-pagination>
+    <el-row class="footer">
+      <el-col :span="4">
+        <el-button type="danger" @click="selectDel">批量删除</el-button>
+      </el-col>
+      <el-col :span="20">
+        <el-pagination
+          background
+          layout="prev, pager, next"
+          :total="total"
+          :page-size="pageSize"
+          :page-count="pageCount"
+          @current-change="currentChange"
+        ></el-pagination>
+      </el-col>
+    </el-row>
   </div>
 </template>
 <script>
@@ -62,7 +70,8 @@ export default {
       pageSize: 15, //每页条数
       total: 0, //数据总数
       tableData: [], //数据数组
-      editMessage: {}
+      editMessage: {},
+      selectArr:[],
     };
   },
   //过滤器 转换男女
@@ -80,7 +89,7 @@ export default {
   methods: {
     //来自子组件的通知，及时更新showadd的属性值
     handleAddCloser(message) {
-      if ("success"===message) {
+      if ("success" === message) {
         this.$message({
           type: "success",
           message: "数据添加成功"
@@ -90,10 +99,10 @@ export default {
       this.getList();
     },
     handleEditCloser(message) {
-      if ("success"===message) {
+      if ("success" === message) {
         this.$message({
           type: "success",
-          message:"数据修改成功"
+          message: "数据修改成功"
         });
       }
       this.showEdit = false;
@@ -154,8 +163,38 @@ export default {
     },
     handleEdit(obj) {
       this.showEdit = true;
-      console.log(obj)
+      console.log(obj);
       this.editMessage = obj;
+    },
+    selectHandle(val){
+      // console.log(val)
+      this.selectArr=[];
+      val.forEach(item=>{
+        this.selectArr.push(item.id)
+      })
+    },
+    selectDel(){
+        this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async() => {
+         let rs=await this.$http.post('/api/user/selectDel',this.selectArr)
+          if (rs.data.code === 1) {
+            this.getList(); //删除成功以后刷新一下页面
+            this.$message({
+              type: "success",
+              message: rs.data.message
+            });
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
     }
   },
   created() {
@@ -165,7 +204,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.el-row {
+.title {
   line-height: 60px;
   .textIput {
     width: 200px;
@@ -174,9 +213,12 @@ export default {
     width: 180px;
   }
 }
+.footer {
+  padding: 10px;
+  background: #fff;
+  text-align: left;
+}
 .el-pagination {
   text-align: right;
-  padding: 10px 10px 10px 0px;
-  background: #fff;
 }
 </style>

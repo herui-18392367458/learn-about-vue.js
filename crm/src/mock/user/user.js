@@ -138,3 +138,18 @@ Mock.mock('/api/user/edit','post',(options)=>{
 		message:"信息修改成功"
 	}
 })
+Mock.mock('/api/user/selectDel','post',(options)=>{
+	console.log(options)
+	let ids=JSON.parse(options.body)
+	ids.forEach(item=>{
+		Users.forEach((item1,index)=>{
+			if(item===item1.id){
+				Users.splice(index,1)
+			}
+		})
+	})
+	return{
+		code:1,
+		message:"数据批量删除成功"
+	}
+})

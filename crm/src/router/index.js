@@ -15,13 +15,17 @@ const routes = [
   {
     path: '/home',
     component: Home,
-    redirect:"/home/user",
+    redirect:"/home/statics",
     meta:{
       id:'1',
       name:"应用管理",
       iconClass:"el-icon-menu"
     },
-    children:[{
+    children:[
+      {
+        path:'/home/statics',
+        component:Statics,
+      },{
         path:'/home/user',
         component:User,
         meta:{
